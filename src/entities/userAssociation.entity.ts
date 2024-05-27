@@ -9,6 +9,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { UsersEntity } from "./users.entity";
+import { RolesEntity } from "./roles.entity";
+import { TeamsEntity } from "./teams.entity";
 
 @Entity("user_association")
 export class UserAssociationEntity {
@@ -69,19 +71,17 @@ export class UserAssociationEntity {
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: UsersEntity;
 
-  // team entity
-  // @ManyToOne(
-  //   () => UsersEntity,
-  //   (usersEntity: UsersEntity) => usersEntity.userAssociation,
-  // )
-  // @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  // team: UsersEntity;
+  @ManyToOne(
+    () => TeamsEntity,
+    (teamsEntity: TeamsEntity) => teamsEntity.userAssociation,
+  )
+  @JoinColumn({ name: "team_id", referencedColumnName: "id" })
+  team: TeamsEntity;
 
-  // role entity
-  // @ManyToOne(
-  //   () => UsersEntity,
-  //   (usersEntity: UsersEntity) => usersEntity.userAssociation,
-  // )
-  // @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  // role: UsersEntity;
+  @ManyToOne(
+    () => RolesEntity,
+    (rolesEntity: RolesEntity) => rolesEntity.userAssociation,
+  )
+  @JoinColumn({ name: "role_id", referencedColumnName: "id" })
+  role: RolesEntity;
 }

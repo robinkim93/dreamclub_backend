@@ -12,6 +12,7 @@ import {
 import { UsersEntity } from "./users.entity";
 import { PostLikeEntity } from "./postLike.entity";
 import { PostViewEntity } from "./postView.entity";
+import { TeamsEntity } from "./teams.entity";
 
 @Entity("posts")
 export class PostsEntity {
@@ -82,10 +83,9 @@ export class PostsEntity {
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user: UsersEntity;
 
-  // team entity
-  // @ManyToOne(() => UsersEntity, (usersEntity: UsersEntity) => usersEntity.posts)
-  // @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  // team: UsersEntity;
+  @ManyToOne(() => TeamsEntity, (teamsEntity: TeamsEntity) => teamsEntity.posts)
+  @JoinColumn({ name: "team_id", referencedColumnName: "id" })
+  teams: TeamsEntity;
 
   @OneToMany(
     () => PostLikeEntity,

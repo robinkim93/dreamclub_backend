@@ -9,7 +9,6 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { UsersEntity } from "./users.entity";
-import { PostsEntity } from "./posts.entity";
 import { CommentsEntity } from "./comments.entity";
 
 @Entity("comment_like")
