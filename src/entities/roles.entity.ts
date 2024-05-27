@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserAssociationEntity } from "./userAssociation.entity";
 
 @Entity("roles")
 export class RolesEntity {
@@ -7,4 +8,10 @@ export class RolesEntity {
 
   @Column("varchar", { name: "role", comment: "역할명" })
   role: string;
+
+  @OneToMany(
+    () => UserAssociationEntity,
+    (userAssociationEntity) => userAssociationEntity.role,
+  )
+  userAssociation: UserAssociationEntity[];
 }

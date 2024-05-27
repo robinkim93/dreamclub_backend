@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { TeamsEntity } from "./teams.entity";
 
 @Entity("sports")
 export class SportsEntity {
@@ -7,4 +8,7 @@ export class SportsEntity {
 
   @Column("varchar", { name: "sport", comment: "종목명" })
   sport: string;
+
+  @OneToMany(() => TeamsEntity, (teamsEntity) => teamsEntity.sports)
+  teams: TeamsEntity[];
 }

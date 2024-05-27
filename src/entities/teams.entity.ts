@@ -5,10 +5,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { UsersEntity } from "./users.entity";
+import { PostsEntity } from "./posts.entity";
+import { SportsEntity } from "./sports.entity";
+import { UserAssociationEntity } from "./userAssociation.entity";
 
 @Entity("teams")
 export class TeamsEntity {
@@ -37,9 +40,6 @@ export class TeamsEntity {
   @Column("timestamp", { name: "since", comment: "창단일" })
   since: Date;
 
-  @Column("int", { name: "user_id", comment: "유저 번호" })
-  userId: number;
-
   @Column("int", { name: "sports_id", comment: "종목 번호" })
   sportsId: number;
 
@@ -64,12 +64,20 @@ export class TeamsEntity {
   })
   deletedAt: Date;
 
-  @ManyToOne(() => UsersEntity, (usersEntity: UsersEntity) => usersEntity.posts)
-  @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  user: UsersEntity;
+  @OneToMany(() => PostsEntity, (postsEntity: PostsEntity) => postsEntity.teams)
+  posts: PostsEntity[];
 
-  // sports entity
-  // @ManyToOne(() => UsersEntity, (usersEntity: UsersEntity) => usersEntity.posts)
-  // @JoinColumn({ name: "user_id", referencedColumnName: "id" })
-  // sports: UsersEntity;
+  @OneToMany(
+    () => UserAssociationEntity,
+    (userAssociationEntity: UserAssociationEntity) =>
+      userAssociationEntity.team,
+  )
+  userAssociation: UserAssociationEntity[];
+
+  @ManyToOne(
+    () => SportsEntity,
+    (sportsEntity: SportsEntity) => sportsEntity.teams,
+  )
+  @JoinColumn({ name: "sports_id", referencedColumnName: "id" })
+  sports: SportsEntity;
 }
