@@ -37,6 +37,12 @@ export class UsersEntity {
   })
   phoneNumber: string;
 
+  @Column("varchar", {
+    name: "refresh_token",
+    comment: "access token 만료 시, 검증 token",
+  })
+  refreshToken: string;
+
   @CreateDateColumn({
     type: "timestamp",
     name: "created_at",
