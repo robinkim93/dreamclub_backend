@@ -5,6 +5,9 @@ import * as expressBasicAuth from "express-basic-auth";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { HttpExceptionFilter } from "./common/exceptions/httpExceptionFilter";
 import { SuccessInterceptor } from "./common/interceptors/success.interceptor";
+import { ValidationPipe } from "@nestjs/common";
+import { ValidationError } from "class-validator";
+import { CustomValidationException } from "./common/exceptions/customValidationException";
 
 dotenv.config();
 
@@ -25,6 +28,13 @@ async function bootstrap() {
 
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalInterceptors(new SuccessInterceptor());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (validationError: ValidationError[]) => {
+        return new CustomValidationException(validationError);
+      },
+    }),
+  );
 
   // swagger
   const swaggerConfig = new DocumentBuilder()
