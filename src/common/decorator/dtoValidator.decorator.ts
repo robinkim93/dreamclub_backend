@@ -5,6 +5,11 @@ import {
   stringValidationMessage,
 } from "../error/type-validation.message";
 
+interface IDecoratorArg {
+  empty?: boolean;
+  validationOptions?: ValidationOptions;
+}
+
 /**
  *
  * @description class-validator에서 DTO 객체 내부 프로퍼티 유효성 검사에 활용
@@ -14,10 +19,7 @@ import {
 export const IsStringWithErrorMessage = ({
   empty = false,
   validationOptions,
-}: {
-  empty?: boolean;
-  validationOptions?: ValidationOptions;
-} = {}) => {
+}: IDecoratorArg = {}) => {
   return empty
     ? IsString({ ...validationOptions, message: stringValidationMessage })
     : applyDecorators(

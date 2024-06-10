@@ -1,7 +1,9 @@
-import { IsOptional } from "class-validator";
+import { userRole, USER_ROLE } from "./../../common/constant/userRole";
+import { IsEmail, IsEnum, IsOptional } from "class-validator";
 import { IsStringWithErrorMessage } from "src/common/decorator/dtoValidator.decorator";
 
 export class SignUpRequestDto {
+  @IsEmail()
   @IsStringWithErrorMessage()
   email: string;
 
@@ -19,8 +21,9 @@ export class SignUpRequestDto {
 
   @IsOptional()
   @IsStringWithErrorMessage()
-  team: string | null;
+  team?: string | null;
 
   @IsStringWithErrorMessage()
-  role: string;
+  @IsEnum(USER_ROLE)
+  role: userRole;
 }
