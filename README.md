@@ -284,3 +284,7 @@
    4. comment (~6/21)
    5. test code / logging (~6/28)
    6. readme / 회고 / 이력서 (~7/5)
+
+## 7. 관련 포스팅 자료
+
+[1. Nest + TypeORM 환경에서 DTO 데코레이터, Exception, Exception Filter 커스텀 해보기](https://dev-robinkim-93.tistory.com/29)
