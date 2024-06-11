@@ -288,3 +288,4 @@
 ## 7. 관련 포스팅 자료
 
 [1. Nest + TypeORM 환경에서 DTO 데코레이터, Exception, Exception Filter 커스텀 해보기](https://dev-robinkim-93.tistory.com/29)
+[2. Typescript에서 상수 관리하기](https://dev-robinkim-93.tistory.com/30)
