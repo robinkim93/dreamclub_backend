@@ -40,8 +40,10 @@ export class UsersEntity {
   @Column("varchar", {
     name: "refresh_token",
     comment: "access token 만료 시, 검증 token",
+    nullable: true,
+    default: null,
   })
-  refreshToken: string;
+  refreshToken: string | null;
 
   @CreateDateColumn({
     type: "timestamp",

@@ -1,8 +1,14 @@
 import { applyDecorators } from "@nestjs/common";
-import { IsNotEmpty, IsString, ValidationOptions } from "class-validator";
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  ValidationOptions,
+} from "class-validator";
 import {
   notEmptyValidationMessage,
   stringValidationMessage,
+  numberValidationMessage,
 } from "../error/type-validation.message";
 
 interface IDecoratorArg {
@@ -25,5 +31,23 @@ export const IsStringWithErrorMessage = ({
     : applyDecorators(
         IsNotEmpty({ message: notEmptyValidationMessage }),
         IsString({ ...validationOptions, message: stringValidationMessage }),
+      );
+};
+
+export const IsNumberWithErrorMessage = ({
+  empty = false,
+  validationOptions,
+}: IDecoratorArg = {}) => {
+  return empty
+    ? IsNumber(
+        { allowInfinity: false },
+        { ...validationOptions, message: numberValidationMessage },
+      )
+    : applyDecorators(
+        IsNotEmpty({ message: notEmptyValidationMessage }),
+        IsNumber(
+          { allowInfinity: false },
+          { ...validationOptions, message: numberValidationMessage },
+        ),
       );
 };

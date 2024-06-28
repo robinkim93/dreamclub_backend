@@ -1,6 +1,9 @@
-import { userRole, USER_ROLE } from "./../../common/constant/userRole";
+import { USER_ROLE, userRole } from "./../../common/constant/userRole";
 import { IsEmail, IsEnum, IsOptional } from "class-validator";
-import { IsStringWithErrorMessage } from "src/common/decorator/dtoValidator.decorator";
+import {
+  IsNumberWithErrorMessage,
+  IsStringWithErrorMessage,
+} from "src/common/decorator/dtoValidator.decorator";
 
 export class SignUpRequestDto {
   @IsEmail()
@@ -20,8 +23,8 @@ export class SignUpRequestDto {
   phoneNumber: string;
 
   @IsOptional()
-  @IsStringWithErrorMessage()
-  team?: string | null;
+  @IsNumberWithErrorMessage()
+  teamId?: number | null;
 
   @IsStringWithErrorMessage()
   @IsEnum(USER_ROLE)
