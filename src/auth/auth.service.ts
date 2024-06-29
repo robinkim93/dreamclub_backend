@@ -5,6 +5,9 @@ import * as jwt from "jsonwebtoken";
 import { ConfigService } from "@nestjs/config";
 import { DataSource } from "typeorm";
 import { UsersEntity } from "src/entities/users.entity";
+import { userRoleMappingObj } from "src/common/constant/userRole";
+import { UserAssociationEntity } from "src/entities/userAssociation.entity";
+import { TeamsEntity } from "src/entities/teams.entity";
 
 @Injectable()
 export class AuthService {
@@ -55,19 +58,27 @@ export class AuthService {
        * 없으면 throw new Error하면 catch에서 받아서 에러 반환
        */
       if (teamId) {
+        const isCheckInvalidTeam = await queryRunner.manager.exists(
+          TeamsEntity,
+          { where: { id: teamId } },
+        );
+
+        // if (!isCheckInvalidTeam) {
+        //   throw new Error();
+        // }
+
+        const roleId = userRoleMappingObj[role];
+        await queryRunner.manager.insert(UserAssociationEntity, {
+          userId,
+          teamId,
+          roleId,
+          isConfirm: 0,
+        });
       }
 
       await queryRunner.commitTransaction();
       return accessToken;
     } catch (error) {
-      // if (error.sqlState === "example1") {
-      //   throw new BadRequestException("example message1");
-      // }
-
-      // if (error.sqlState === "example2") {
-      //   throw new BadRequestException("example message2");
-      // }
-
       await queryRunner.rollbackTransaction();
       throw new BadRequestException("sign_up_fail");
     } finally {
@@ -110,4 +121,10 @@ export class AuthService {
 
     return token;
   }
+
+  /**
+   * bcrypt 사용해서 비밀번호 암호화
+   * @param password
+   */
+  hashPassword(password: string) {}
 }
