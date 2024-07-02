@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { SignUpRequestDto } from "./dto/signUp.request.dto";
 import { UsersRepository } from "src/user/user.repository";
 import * as jwt from "jsonwebtoken";
@@ -8,6 +12,7 @@ import { UsersEntity } from "src/entities/users.entity";
 import { userRoleMappingObj } from "src/common/constant/userRole";
 import { UserAssociationEntity } from "src/entities/userAssociation.entity";
 import { TeamsEntity } from "src/entities/teams.entity";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class AuthService {
@@ -35,39 +40,42 @@ export class AuthService {
         name,
         phoneNumber,
         teamId = null,
-        role,
+        role = null,
       } = signUpDto;
 
-      const newUser = await queryRunner.manager.insert(UsersEntity, {
+      const newUser = await queryRunner.manager.save(UsersEntity, {
         email,
         nickname,
-        password,
+        password: await this.hashPassword(password),
         name,
         phoneNumber,
       });
 
-      const userId = newUser.raw["insertId"];
+      const userId = newUser.id;
 
-      const refreshToken = this.createRefreshToken(userId);
-      const accessToken = this.createAccessToken(userId);
+      const refreshToken = this.createRefreshToken(newUser);
+      const accessToken = this.createAccessToken(newUser);
 
-      await queryRunner.manager.update(UsersEntity, userId, { refreshToken });
+      await queryRunner.manager.update(UsersEntity, userId, {
+        refreshToken,
+      });
 
       /**
        * 팀 검색 후, 존재하는 팀이면 user_association에 userId, teamId, roleId (role 테이블 검색), isConfirm은 false
        * 없으면 throw new Error하면 catch에서 받아서 에러 반환
        */
-      if (teamId) {
+      if (teamId || role) {
         const isCheckInvalidTeam = await queryRunner.manager.exists(
           TeamsEntity,
           { where: { id: teamId } },
         );
 
-        // if (!isCheckInvalidTeam) {
-        //   throw new Error();
-        // }
+        if (!isCheckInvalidTeam) {
+          throw new NotFoundException("invalid team");
+        }
 
         const roleId = userRoleMappingObj[role];
+
         await queryRunner.manager.insert(UserAssociationEntity, {
           userId,
           teamId,
@@ -80,15 +88,21 @@ export class AuthService {
       return accessToken;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+
+      if (error instanceof NotFoundException) {
+        throw new BadRequestException("invalid_team");
+      }
+
       throw new BadRequestException("sign_up_fail");
     } finally {
       await queryRunner.release();
     }
   }
 
-  createRefreshToken(userId: number) {
+  createRefreshToken(newUser: UsersEntity) {
     const payload = {
-      id: userId,
+      id: newUser.id,
+      createdAt: newUser.createdAt,
     };
 
     const secretKey: string = this.configService.get(
@@ -104,9 +118,10 @@ export class AuthService {
     return token;
   }
 
-  createAccessToken(userId: number) {
+  createAccessToken(newUser: UsersEntity) {
     const payload = {
-      id: userId,
+      id: newUser.id,
+      createdAt: newUser.createdAt,
     };
 
     const secretKey: string = this.configService.get(
@@ -126,5 +141,12 @@ export class AuthService {
    * bcrypt 사용해서 비밀번호 암호화
    * @param password
    */
-  hashPassword(password: string) {}
+  async hashPassword(password: string): Promise<string> {
+    const hashedPassword: string = await bcrypt.hash(
+      password,
+      +this.configService.get("SALT_ROUND"),
+    );
+
+    return hashedPassword;
+  }
 }
