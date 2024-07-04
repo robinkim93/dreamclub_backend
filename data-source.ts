@@ -15,7 +15,7 @@ const typeormDataSource = new DataSource({
   logging: true,
   cache: true,
   migrations: ["src/migrations/*.{ts,js}"],
-  migrationsRun: true,
+  migrationsRun: false,
 });
 
 export default typeormDataSource;

@@ -17,7 +17,7 @@ export const typeORMConfig: TypeOrmModuleAsyncOptions = {
     logging: true,
     cache: true,
     migrations: [__dirname + "/../../migrations/*.{ts,js}"],
-    migrationsRun: true,
+    migrationsRun: false,
   }),
   dataSourceFactory: async (options) => {
     const dataSource = await new DataSource(options).initialize();

@@ -33,11 +33,11 @@
     </tr>
     <tr>
       <td>Backend</td>
-      <td>Nest.js, Prisma</td>
+      <td>Nest.js, typeORM</td>
     </tr>
     <tr>
       <td>DataBase</td>
-      <td>Postgresql, Redis</td>
+      <td>MySQL</td>
     </tr>
     <tr>
       <td>Infra</td>
@@ -53,10 +53,8 @@
 
 1. 테스트 코드 작성
 2. 로깅 데이터 관리
-3. prisma 및 postgresql 사용
-4. session 방식 로그인 구현 (이 부분에서 redis 사용 고려 또한 도전 과제)
-5. api key 발급 후, api 호출 가능하도록 구현
-6. 추후 개발 계획
+3. api key 발급 후, api 호출 가능하도록 구현
+4. 추후 개발 계획
    1. admin 페이지 구현
    2. 소셜 로그인 구현
 
@@ -209,7 +207,7 @@
    1. 인증 인가 방식
       1. AUTH : 회원 유무 검증
       2. OWNER : 주로 리소스 삭제 시, 본인의 리소스인지 검증
-      3. ROLL : 역할 검증
+      3. ROLE : 역할 검증
       4. TEAM : 팀에 소속된 유저인지 검증 (team_id와 user_association 테이블의 is_confirm 체크)
    2. 쿼리 스트링
       1. 명시 된 항목이 key가 되고, value를 채워서 url에 작성
@@ -225,12 +223,12 @@
       1. (유저 정보 조회) GET /user/:userId
       2. (유저 정보 수정) PUT /user/:userId AUTH
       3. (유저 탈퇴) DELETE /user/:userId AUTH OWNER
-      4. (팀 합류 승인) PUT /user/confirm/:userId AUTH ROLL TEAM
+      4. (팀 합류 승인) PUT /user/confirm/:userId AUTH ROLE TEAM
    3. team
       1. (팀 생성) POST /team AUTH
-      2. (팀 정보 변경) PUT /team/:teamId AUTH TEAM ROLL
+      2. (팀 정보 변경) PUT /team/:teamId AUTH TEAM ROLE
       3. (팀 정보 조회) GET /team/:teamId
-      4. (팀 삭제) DELETE /team/:teamId AUTH TEAM OWNER ROLL
+      4. (팀 삭제) DELETE /team/:teamId AUTH TEAM OWNER ROLE
       5. (팀 리스트 조회) GET /team
          1. 쿼리 스트링
             1. offset (페이지)
