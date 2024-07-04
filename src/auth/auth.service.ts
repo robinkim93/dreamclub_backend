@@ -64,25 +64,25 @@ export class AuthService {
        * 팀 검색 후, 존재하는 팀이면 user_association에 userId, teamId, roleId (role 테이블 검색), isConfirm은 false
        * 없으면 throw new Error하면 catch에서 받아서 에러 반환
        */
-      if (teamId || role) {
-        const isCheckInvalidTeam = await queryRunner.manager.exists(
-          TeamsEntity,
-          { where: { id: teamId } },
-        );
+      // if (teamId || role) {
+      //   const isCheckInvalidTeam = await queryRunner.manager.exists(
+      //     TeamsEntity,
+      //     { where: { id: teamId } },
+      //   );
 
-        if (!isCheckInvalidTeam) {
-          throw new NotFoundException("invalid team");
-        }
+      //   if (!isCheckInvalidTeam) {
+      //     throw new NotFoundException("invalid team");
+      //   }
 
-        const roleId = userRoleMappingObj[role];
+      //   const roleId = userRoleMappingObj[role];
 
-        await queryRunner.manager.insert(UserAssociationEntity, {
-          userId,
-          teamId,
-          roleId,
-          isConfirm: 0,
-        });
-      }
+      //   await queryRunner.manager.insert(UserAssociationEntity, {
+      //     userId,
+      //     teamId,
+      //     roleId,
+      //     isConfirm: 0,
+      //   });
+      // }
 
       await queryRunner.commitTransaction();
       return accessToken;
