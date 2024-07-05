@@ -126,11 +126,6 @@
     <tr>
       <td>숫자만 입력 가능</td>
     </tr>
-     <!--종목-->
-    <tr>
-      <td style="background:grey">종목</td>
-      <td>축구 / 농구 / 야구 / 배구로 나뉨</td>
-    </tr>
 </table>
 
 2. 로그인
