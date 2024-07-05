@@ -2,7 +2,7 @@ import { HttpStatus } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { Expose } from "class-transformer";
 
-export class BaseErrorResponseDto {
+export class BaseErrorResponseDto<T = any> {
   @Expose()
   @ApiProperty({ description: "상태 코드", enum: HttpStatus })
   statusCode: number;
@@ -12,7 +12,10 @@ export class BaseErrorResponseDto {
   timestamp: Date;
 
   @Expose()
-  @ApiProperty({ description: "요청 경로", example: "/health_check" })
+  @ApiProperty({
+    description: "요청 경로",
+    example: "/end_point/params?query=example",
+  })
   path: string;
 
   @Expose()
@@ -23,6 +26,6 @@ export class BaseErrorResponseDto {
   method: string;
 
   @Expose()
-  @ApiProperty({ description: "에러 메시지", example: "error_message" })
-  error: string;
+  @ApiProperty({ description: "에러 메시지" })
+  error: T;
 }

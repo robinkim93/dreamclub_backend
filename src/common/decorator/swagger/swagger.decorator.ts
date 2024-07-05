@@ -1,17 +1,7 @@
-import { AuthController } from "src/auth/auth.controller";
-import { OperationObject } from "@nestjs/swagger/dist/interfaces/open-api-spec.interface";
-import { Auth } from "./auth.swagger.decorator";
+import { Auth } from "./auth/auth.swagger.decorator";
+import { ISwaggerDecoratorObj } from "../../interfaces/swagger.interface";
 
-interface Common {
-  Auth: ApiOperator<keyof AuthController>;
-}
-
-export type ApiOperator<T extends string> = {
-  [key in Capitalize<T>]: (
-    opeartorOptions: Partial<OperationObject>,
-  ) => PropertyDecorator;
-};
-
-export const Swagger: Common = {
+// 실제 controller에서 @Swagger.Auth.SignUp()의 형태로 사용
+export const Swagger: ISwaggerDecoratorObj = {
   Auth,
 };

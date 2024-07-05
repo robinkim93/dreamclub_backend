@@ -213,7 +213,7 @@
 2. end point
    1. auth
       1. (회원가입) POST /auth/register
-      2. (로그인) POST /auth/login
+      2. (로그인) POST /auth/login AUTH
    2. user
       1. (유저 정보 조회) GET /user/:userId
       2. (유저 정보 수정) PUT /user/:userId AUTH
@@ -261,7 +261,7 @@
             1. offset (페이지)
             2. limit (갯수)
 
-## 6. 일정
+<!-- ## 6. 일정
 
 1. 6/21 개발 마무리 (약 4주)
    1. auth / user 1주
@@ -276,9 +276,10 @@
    3. post (~6/14)
    4. comment (~6/21)
    5. test code / logging (~6/28)
-   6. readme / 회고 / 이력서 (~7/5)
+   6. readme / 회고 / 이력서 (~7/5) -->
 
-## 7. 관련 포스팅 자료
+
+## 6. 관련 포스팅 자료
 
 [1. Nest + TypeORM 환경에서 DTO 데코레이터, Exception, Exception Filter 커스텀 해보기](https://dev-robinkim-93.tistory.com/29)
 
