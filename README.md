@@ -126,11 +126,6 @@
     <tr>
       <td>숫자만 입력 가능</td>
     </tr>
-     <!--종목-->
-    <tr>
-      <td style="background:grey">종목</td>
-      <td>축구 / 농구 / 야구 / 배구로 나뉨</td>
-    </tr>
 </table>
 
 2. 로그인
@@ -218,7 +213,7 @@
 2. end point
    1. auth
       1. (회원가입) POST /auth/register
-      2. (로그인) POST /auth/login
+      2. (로그인) POST /auth/login AUTH
    2. user
       1. (유저 정보 조회) GET /user/:userId
       2. (유저 정보 수정) PUT /user/:userId AUTH
@@ -266,7 +261,7 @@
             1. offset (페이지)
             2. limit (갯수)
 
-## 6. 일정
+<!-- ## 6. 일정
 
 1. 6/21 개발 마무리 (약 4주)
    1. auth / user 1주
@@ -281,4 +276,4 @@
    3. post (~6/14)
    4. comment (~6/21)
    5. test code / logging (~6/28)
-   6. readme / 회고 / 이력서 (~7/5)
+   6. readme / 회고 / 이력서 (~7/5) -->

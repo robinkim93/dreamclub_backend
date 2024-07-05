@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { USER_ROLE, userRole } from "./../../common/constant/userRole";
-import { IsEmail, IsEnum, IsOptional } from "class-validator";
+import { IsEmail, IsEnum, IsOptional, Matches } from "class-validator";
 import {
   IsNumberWithErrorMessage,
   IsStringWithErrorMessage,
@@ -17,6 +17,7 @@ export class SignUpRequestDto {
   email: string;
 
   @IsStringWithErrorMessage()
+  @Matches(/^[가-힣a-zA-Z0-9_-]{2,12}$/)
   @ApiProperty({
     description: "유저 nickname",
     required: true,
@@ -25,10 +26,11 @@ export class SignUpRequestDto {
   nickname: string;
 
   @IsStringWithErrorMessage()
+  @Matches(/^(?=.*[A-Z])(?=.*[!@#$%^&*?_]).{6,20}$/)
   @ApiProperty({
     description: "유저 password",
     required: true,
-    example: "password12345",
+    example: "Password12345!",
   })
   password: string;
 
@@ -41,6 +43,7 @@ export class SignUpRequestDto {
   name: string;
 
   @IsStringWithErrorMessage()
+  @Matches(/^[0-9]+$/)
   @ApiProperty({
     description: "유저 핸드폰 번호 (- 제외 숫자만)",
     required: true,

@@ -18,10 +18,10 @@ export class UsersEntity {
   @PrimaryGeneratedColumn({ type: "int", name: "id" })
   id: number;
 
-  @Column("varchar", { name: "email", comment: "이메일" })
+  @Column("varchar", { name: "email", comment: "이메일", unique: true })
   email: string;
 
-  @Column("varchar", { name: "nickname", comment: "닉네임" })
+  @Column("varchar", { name: "nickname", comment: "닉네임", unique: true })
   nickname: string;
 
   @Column("varchar", { name: "password", comment: "비밀번호" })

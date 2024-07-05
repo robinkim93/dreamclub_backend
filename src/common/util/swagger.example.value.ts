@@ -74,12 +74,8 @@ export const makeSwaggerSuccessExampleValue = ({
 
 export const makeSwaggerErrorExampleValue = ({
   message,
-  example,
-  description,
 }: {
   message: string;
-  example: string;
-  description: string;
 }) => {
   // success.interceptor의 반환값에 대한 dto의 apiProperty값이 담긴 배열
   const baseResponsePropertyArray: string[] = Reflect.getMetadata(
@@ -106,10 +102,12 @@ export const makeSwaggerErrorExampleValue = ({
     );
 
     // example이 있으면 example 할당, 없으면 enum 배열의 첫번째 값 할당
-    if (!metaData.example) {
-      example = metaData.enum[0];
-    } else {
+    if (metaData.example) {
       example = metaData.example;
+    }
+
+    if (metaData.enum) {
+      example = metaData.enum[0];
     }
 
     result[fieldName] = example;

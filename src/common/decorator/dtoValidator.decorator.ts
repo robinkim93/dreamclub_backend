@@ -9,7 +9,7 @@ import {
   notEmptyValidationMessage,
   stringValidationMessage,
   numberValidationMessage,
-} from "../error/type-validation.message";
+} from "../util/type-validation.message";
 
 interface IDecoratorArg {
   empty?: boolean;
